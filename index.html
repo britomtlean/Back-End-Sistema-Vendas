@@ -1,398 +1,359 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Central de Pedidos</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Central de Pedidos</title>
+        <style>
+            * {
+                margin: 0 auto;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-  <style>
-    * {
-      margin: 0 auto;
-      padding: 0;
-      box-sizing: border-box;
-      overflow-x: hidden;
-    }
+            body {
+                font-family: Arial;
+                max-width: 100vw;
+                min-height: 100vh;
+                margin: 0;
+                /*background-color: rgb(96, 167, 167);*/
+                background: linear-gradient(to bottom, rgb(96, 167, 167), rgb(105, 168, 126));
 
-    body {
-      font-family: Arial;
-      width: 100vw;
-      max-width: 1280px;
-      min-height: 100vh;
-      margin: 0;
-      /*background-color: rgb(96, 167, 167);*/
-      background: linear-gradient(to bottom, rgb(96, 167, 167), rgb(105, 168, 126));
-      font-size: 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: start;
-      align-items: center;
-      overflow-x: hidden;
-      align-self: center;
-      padding-bottom: 10%;
-    }
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                align-items: center;
+                overflow-x: hidden;
+                align-self: center;
+                padding-bottom: 10%;
+            }
 
-    header {
-      width: 100%;
-      height: 10vh;
-      padding: 0 5%;
-      margin-bottom: 60px;
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: rgb(48, 83, 83);
-    }
+            header {
+                width: 100%;
+                height: 10vh;
+                padding: 0 5%;
+                margin-bottom: 60px;
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: rgb(48, 83, 83);
+            }
 
-    header h1 {
-      color: #ccc;
-      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-      font-weight: bold;
-    }
+            header h1 {
+                color: #ccc;
+                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                font-weight: bold;
+            }
 
-    header li {
-      list-style: none;
-      display: inline-block;
-      margin-left: 30px;
-      color: #ccc;
-      font-size: 2.5rem;
-      font-weight: 300;
-      cursor: pointer;
-    }
+            header li {
+                list-style: none;
+                display: inline-block;
+                margin-left: 30px;
+                color: #ccc;
+                font-size: 1rem;
+                font-weight: 300;
+                cursor: pointer;
+            }
 
-    header li:hover {
-      color: yellow;
-      border-bottom: 1px solid yellow;
-      padding-bottom: 2px;
-      transition: ease-in;
-    }
+            header li:hover {
+                color: yellow;
+                border-bottom: 1px solid yellow;
+                padding-bottom: 2px;
+                transition: ease-in;
+            }
 
-    .active {
-      display: flex;
-      flex-direction: column;
-      justify-content: start;
-      align-items: center;
-      width: 90%;
-    }
+            .active {
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                align-items: center;
+                width: 90%;
+            }
 
-    section {
-      display: none;
-      flex-direction: column;
-      justify-content: start;
-      align-items: center;
-      width: 90%;
-    }
+            section {
+                display: none;
+                flex-direction: column;
+                justify-content: start;
+                align-items: center;
+                width: 90%;
+            }
 
-    #mensagens {
-      border: 1px solid #ccc;
-      margin-top: 40px;
-      margin-bottom: 40px;
-      padding: 20px 0;
-      height: 30vh;
-      width: 100%;
-      overflow-y: auto;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 8px;
-    }
+            #mensagens {
+                border: 1px solid #ccc;
+                margin-top: 40px;
+                margin-bottom: 40px;
+                padding: 20px 0;
+                height: 30vh;
+                width: 100%;
+                overflow-y: auto;
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                border-radius: 8px;
+            }
 
-    #produtos .produtos-content {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-top: 40px;
-      margin-bottom: 40px;
-      height: 50vh;
-      width: 100%;
-      overflow-y: auto;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      display: flex;
-      flex-direction: column;
-      justify-content: start;
-      align-items: center;
-    }
+            #produtos .produtos-content {
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                margin-top: 2rem;
+                margin-bottom: 40px;
+                height: 50vh;
+                width: 100%;
+                overflow-y: auto;
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                align-items: center;
+            }
 
-    #produtos ul {
-      width: 100%;
-    }
+            #produtos ul {
+                width: 100%;
+            }
 
-    #produtos .button-content {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+            #produtos .button-content {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-    #produtos button {
-      flex: 1;
-      padding: 30px 30px;
-      background-color: red;
-      color: white;
-      font-size: 2.2rem;
-    }
+            #produtos button {
+                flex: 1;
+                padding: 1rem 1rem;
+                background-color: red;
+                color: white;
+                font-size: 1rem;
+            }
 
-    #cadastrar {
+            #cadastrar {
+                padding-bottom: 40px;
+            }
 
-      padding-bottom: 40px;
-    }
+            #cadastrar form {
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                margin-top: 40px;
+                margin-bottom: 40px;
+                height: 60vh;
+                width: 100%;
+                overflow-y: auto;
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 60px 5%;
+            }
 
-    #cadastrar form {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-top: 40px;
-      margin-bottom: 40px;
-      height: 60vh;
-      width: 100%;
-      overflow-y: auto;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 60px 5%;
+            #cadastrar label {
+                width: 100%;
+                margin-bottom: 40px;
+            }
 
-    }
+            #cadastrar h3 {
+                margin-bottom: 0.5rem;
+            }
 
-    #cadastrar label {
-      width: 100%;
-      margin-bottom: 40px;
-    }
+            #cadastrar form input,
+            form textarea {
+                display: block;
+                width: 100%;
+                height: 6rem;
+                padding: 5px;
+                font-size: 1rem;
+                border-radius: 8px;
+                background: rgba(209, 209, 209, 0.397);
+                outline: none;
+                border: 2px solid rgba(255, 255, 255, 0.2);
+            }
 
-    #cadastrar h3 {
-      margin-bottom: 0.5rem;
-    }
+            #cadastrar button {
+                width: 100%;
+                padding: 30px 30px;
+                background-color: #2563eb;
+                color: white;
+                font-size: 1rem;
+            }
 
-    #cadastrar form input,
-    form textarea {
-      display: block;
-      width: 100%;
-      height: 6rem;
-      padding: 5px;
-      font-size: 1.8rem;
-      border-radius: 8px;
-      background: rgba(209, 209, 209, 0.397);
-      outline: none;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-    }
+            img {
+                max-width: 350px;
+            }
 
-    #cadastrar button {
-      width: 100%;
-      padding: 30px 30px;
-      background-color: #2563eb;
-      color: white;
-      font-size: 2.2rem;
-    }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: rgb(207, 207, 207);
+                color: black;
+                margin-bottom: 20px;
+                font-size: 1.6rem;
+            }
 
-    img {
-      max-width: 350px;
-    }
+            th,
+            td {
+                padding: 12px 2%;
+                text-align: center;
+                border-bottom: 1px solid #444;
+            }
 
-    #clientes form {
-      border: 1px solid #ccc;
-      margin-top: 40px;
-      margin-bottom: 40px;
-      padding: 20px 5%;
-      height: 30vh;
-      width: 100%;
-      overflow-y: auto;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 8px;
-    }
+            th {
+                background-color: rgb(180, 197, 197);
+            }
 
-    #clientes input,
-    form textarea {
-      display: block;
-      width: 100%;
-      height: 6rem;
-      padding: 5px;
-      font-size: 1.8rem;
-      border-radius: 8px;
-      background: rgba(209, 209, 209, 0.397);
-      outline: none;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-    }
+            tr:hover {
+                background: #2a2a2a;
+                color: white;
+            }
 
-    #clientes button {
-      width: 100%;
-      padding: 30px 30px;
-      background-color: #2563eb;
-      color: white;
-      font-size: 2.2rem;
-    }
+            .btn {
+                background: red;
+                color: white;
+                font-size: 1rem;
+                padding: 0.4rem;
+                border-radius: 8px;
+                cursor: pointer;
+                border: none;
+                font-weight: bold;
+            }
 
+            .btn:active {
+                transform: scale(0.97);
+            }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: rgb(207, 207, 207);
-      color: black;
-      margin-bottom: 20px;
-      font-size: 1.6rem;
-    }
+            .loading {
+                font-size: 24px;
+                color: white;
+                margin-top: 40px;
+            }
+        </style>
+    </head>
 
-    th,
-    td {
-      padding: 12px 2%;
-      text-align: center;
-      border-bottom: 1px solid #444;
-    }
+    <body>
+        <header>
+            <h1>Menu</h1>
+            <ul>
+                <li onclick="sectionActive('pedidos')">Delivery</li>
+                <li onclick="sectionActive('produtos')">Produtos</li>
+                <li onclick="sectionActive('clientes')">Clientes</li>
+            </ul>
+        </header>
 
-    th {
-      background-color: rgb(180, 197, 197);
-    }
+        <button id="ativarSom" class="btn" style="margin-bottom: 2rem">Ativar Som</button>
 
-    tr:hover {
-      background: #2a2a2a;
-      color: white;
-    }
+        <!-- Seção de pedidos -->
+        <section id="pedidos">
+            <h1>Central de pedidos:</h1>
 
-    .btn {
-      background: red;
-      color: white;
-      font-size: 2rem;
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      font-weight: bold;
-    }
+            <div id="mensagens" style="display: flex; flex-direction: column; gap: 8px"></div>
 
-    .btn:active {
-      transform: scale(0.97);
-    }
+            <div style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center">
+                <label for="filtroData" style="font-size: 1rem; color: white">Filtrar por data:</label>
+                <input
+                    type="date"
+                    id="filtroData"
+                    style="padding: 8px; border-radius: 6px; border: none; font-size: 1rem"
+                />
+                <button id="limparFiltro" class="btn" style="margin-left: 8px">Limpar</button>
+            </div>
 
-    .loading {
-      font-size: 24px;
-      color: white;
-      margin-top: 40px;
-    }
-  </style>
+            <div id="tabelaContainer" style="overflow-y: auto; height: 600px; width: 100%; border-radius: 8px"></div>
 
-</head>
+            <div id="totalPedidos"></div>
+        </section>
 
-<body>
+        <!-- Seção de produtos -->
+        <section id="produtos">
+            <h1>Produtos</h1>
+            <div class="produtos-content">
+                <ul id="lista-produtos"></ul>
+            </div>
+            <div class="button-content">
+                <button onclick="sectionActive('cadastrar')">Cadastrar</button>
+                <button
+                    onclick="
+                        () => {
+                            alert('Em construção');
+                        }
+                    "
+                >
+                    Estoque
+                </button>
+            </div>
+        </section>
 
-  <header>
-    <h1>Menu</h1>
-    <ul>
-      <li onclick="sectionActive('pedidos')">Delivery</li>
-      <li onclick="sectionActive('produtos')">Produtos</li>
-      <li onclick="sectionActive('clientes')">Clientes</li>
-    </ul>
-  </header>
+        <!-- Seção de clientes -->
+        <section id="clientes">
+            <h1>Clientes</h1>
+        </section>
 
-  <button id="ativarSom" class="btn" style="margin-bottom: 80px; padding: 8px 20px; font-size: 2.2rem;">Ativar Som
-  </button>
+        <!-- Seção de cadastro -->
+        <section id="cadastrar">
+            <h1>Cadastrar Produto</h1>
 
-  <!-- Seção de pedidos -->
-  <section id="pedidos">
+            <form id="formProduto" enctype="multipart/form-data">
+                <label>
+                    <h3>Nome do produto *</h3>
+                    <input type="text" name="produto_produtos" id="produto" required />
+                </label>
 
-    <h1>Central de pedidos:</h1>
+                <label>
+                    <h3>Descrição</h3>
+                    <textarea name="descricao_produtos" id="descricao" rows="3"></textarea>
+                </label>
 
-    <div id="mensagens" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                <label>
+                    <h3>Valor (ex: 8.50) *</h3>
+                    <input type="text" name="valor_produtos" id="valor" required inputmode="decimal" />
+                </label>
 
-    <div style="margin-bottom: 20px;">
-      <label for="filtroData" style="font-size: 2.5rem; color: white;">Filtrar por data:</label>
-      <input type="date" id="filtroData" style="padding: 8px; border-radius: 6px; border: none; font-size: 2rem;" />
-      <button id="limparFiltro" class="btn" style="margin-left: 8px;">Limpar</button>
-    </div>
+                <label>
+                    <h3>Estoque *</h3>
+                    <input type="number" name="estoque_produtos" id="estoque" required min="0" />
+                </label>
 
-    <div id="tabelaContainer"
-      style="overflow-y: auto; height: 600px; width: 100%; border-radius: 8px; margin-bottom: 60px;"></div>
+                <label>
+                    <h3>Imagem do produto (PNG/JPG) *</h3>
+                    <input type="file" name="imagem" id="imagem" accept="image/png, image/jpeg" required />
+                </label>
 
-    <div id="totalPedidos"></div>
+                <div style="display: flex; gap: 10px; align-items: center">
+                    <button type="submit" id="btnEnviar">Enviar produto</button>
+                    <div id="loading" style="display: none">Enviando…</div>
+                </div>
+            </form>
+            <div class="status" id="status" style="display: none; margin-bottom: 20px; font-size: 2.5rem"></div>
 
-  </section>
+            <div
+                class="preview"
+                id="previewWrapper"
+                style="
+                    display: none;
+                    max-height: 500px;
+                    width: 100%;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                "
+            >
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: start">
+                    <div style="flex: 4"><img id="previewImg" alt="preview da imagem" /></div>
+                </div>
+                <div style="flex: 1">
+                    <small id="fileInfo"></small>
+                </div>
+            </div>
+        </section>
 
-  <!-- Seção de produtos -->
-  <section id="produtos">
-    <h1>Produtos</h1>
-    <div class="produtos-content">
-      <ul id="lista-produtos"></ul>
-    </div>
-    <div class="button-content">
-      <button onclick="sectionActive('cadastrar')">Cadastrar</button>
-      <button onclick="() => {alert('Em construção')}">Estoque</button>
-    </div>
-  </section>
-
-  <!-- Seção de clientes -->
-  <section id="clientes">
-    <h2>Cadastro de Clientes</h2>
-    <form style="display: flex; flex-flow: column; gap: 16px;" id="cadastroForm">
-      <label for="nome">Nome</label>
-      <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
-
-      <label for="whatsapp">WhatsApp</label>
-      <input type="tel" id="whatsapp" name="whatsapp" placeholder="(99) 99999-9999" required
-        pattern="\(?\d{2}\)?\s?\d{4,5}-?\d{4}">
-
-      <label for="senha">Senha</label>
-      <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required minlength="6">
-
-      <button type="submit">Cadastrar</button>
-      <div class="message" id="message"></div>
-    </form>
-  </section>
-
-  <!-- Seção de cadastro -->
-  <section id="cadastrar">
-    <h1>Cadastrar Produto</h1>
-
-    <form id="formProduto" enctype="multipart/form-data">
-      <label>
-        <h3>Nome do produto *</h3>
-        <input type="text" name="produto_produtos" id="produto" required />
-      </label>
-
-      <label>
-        <h3>Descrição</h3>
-        <textarea name="descricao_produtos" id="descricao" rows="3"></textarea>
-      </label>
-
-      <label>
-        <h3>Valor (ex: 8.50) *</h3>
-        <input type="text" name="valor_produtos" id="valor" required inputmode="decimal" />
-      </label>
-
-      <label>
-        <h3>Estoque *</h3>
-        <input type="number" name="estoque_produtos" id="estoque" required min="0" />
-      </label>
-
-      <label>
-        <h3>Imagem do produto (PNG/JPG) *</h3>
-        <input type="file" name="imagem" id="imagem" accept="image/png, image/jpeg" required />
-      </label>
-
-      <div style="display:flex; gap:10px; align-items:center;">
-        <button type="submit" id="btnEnviar">Enviar produto</button>
-        <div id="loading" style="display:none;">Enviando…</div>
-      </div>
-    </form>
-    <div class="status" id="status" style="display:none; margin-bottom: 20px; font-size: 2.5rem;"></div>
-
-    <div class="preview" id="previewWrapper"
-      style="display:none; max-height: 500px; width: 100%; justify-content: center; align-items: center; gap: 10px;">
-      <div style="display: flex; flex-direction: column; justify-content: center; align-items: start;">
-        <div style="flex: 4;"><img id="previewImg" alt="preview da imagem" /></div>
-      </div>
-      <div style="flex: 1;">
-        <small id="fileInfo"></small>
-      </div>
-    </div>
-  </section>
-
-  <!-- Socket.IO -->
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/carregarProdutos.js"></script>
-  <script src="/js/sectionActive.js"></script>
-  <script src="/js/cadastrarProduto.js"></script>
-  <script src="/js/socket.js"></script>
-  <script src="/js/centralPedidos.js"></script>
-
-</body>
-
+        <!-- Socket.IO -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/carregarProdutos.js"></script>
+        <script src="/js/sectionActive.js"></script>
+        <script src="/js/cadastrarProduto.js"></script>
+        <script src="/js/socket.js"></script>
+        <script src="/js/centralPedidos.js"></script>
+    </body>
 </html>
