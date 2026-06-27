@@ -165,7 +165,7 @@ router.post('/gerarPDF', async (req, res) => {
     console.log(req.body);
 
     try {
-        const { id, produtos, valorTotal, nomeCliente, contatoCliente, enderecoCliente } = req.body;
+        const { id, dataPedido, produtos, valorTotal, nomeCliente, contatoCliente, enderecoCliente } = req.body;
 
 
         /***************************************************CRIAÇAO DE PDF************************************************** */
@@ -193,7 +193,7 @@ router.post('/gerarPDF', async (req, res) => {
 
         doc.fontSize(20).text('Central de Pedidos', { align: 'center', bold: true }).moveDown(0.5);
         doc.fontSize(12)
-            .text(`Data: ${Date.now()}`, { align: 'center' })
+            .text(`Data: ${dataPedido}`, { align: 'center' })
             .text(`ID da Venda: ${id}`, { align: 'center' })
             .moveDown(1);
 
@@ -202,12 +202,12 @@ router.post('/gerarPDF', async (req, res) => {
         // ================== TABELA ==================
         doc.fontSize(12).text('Itens:', { underline: true }).moveDown(0.5);
 
-        produtos.forEach((p) => {
+        produtos.forEach((p, index) => {
             doc.fontSize(10)
-                .text(`${p.produtoId}. ${'valor unitario'} — ${'quantidade'}x R$ ${(99.9).toFixed(2)}`, {
+                .text(`${index + 1}. ${p.nome} — ${p.quantidade} x R$ ${p.valorUnitario.toFixed}`, {
                     align: 'left',
                 })
-                .text(`   Total: R$ ${valorTotal.toFixed(2)}`)
+                .text(`   Total: R$ ${psubtotal.toFixed(2)}`)
                 .moveDown(1);
         });
 
@@ -217,7 +217,7 @@ router.post('/gerarPDF', async (req, res) => {
 
         // ================== TOTAL ==================
         doc.moveDown(1);
-        doc.fontSize(14).text(`Total da Venda: R$ ${300.00.toFixed(2)}`, {
+        doc.fontSize(14).text(`Total da Venda: R$ ${valorTotal.toFixed(2)}`, {
             align: 'right',
             bold: true,
         });
