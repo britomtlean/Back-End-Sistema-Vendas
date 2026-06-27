@@ -193,18 +193,23 @@ router.post('/gerarPDF', async (req, res) => {
 
         doc.fontSize(20).text('Central de Pedidos', { align: 'center', bold: true }).moveDown(0.5);
         doc.fontSize(12)
-            .text(`Data: ${dataPedido}`, { align: 'center' })
+            .text(
+                `Data: ${new Date(dataPedido).toLocaleString('pt-BR', {
+                    timeZone: 'America/Sao_Paulo',
+                })}`,
+                { align: 'center' }
+            )
             .text(`ID da Venda: ${id}`, { align: 'center' })
             .moveDown(1);
 
         doc.fontSize(14).text('Detalhes da Venda', { align: 'center' }).moveDown(3);
 
         // ================== TABELA ==================
-        doc.fontSize(12).text('Itens:', { underline: true }).moveDown(0.5);
+        doc.fontSize(12).text('Produtos:', { underline: true }).moveDown(0.5);
 
         produtos.forEach((p, index) => {
             doc.fontSize(10)
-                .text(`${index + 1}. ${p.nome} — ${p.quantidade} x R$ ${p.valorUnitario.toFixed}`, {
+                .text(`${index + 1}. ${p.nome} — ${p.quantidade} x R$ ${p.valorUnitario.toFixed()}`, {
                     align: 'left',
                 })
                 .text(`   Total: R$ ${p.subtotal.toFixed(2)}`)
