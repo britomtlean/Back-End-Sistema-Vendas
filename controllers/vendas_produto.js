@@ -165,7 +165,7 @@ router.post('/gerarPDF', async (req, res) => {
     console.log(req.body);
 
     try {
-        const { Id, DataPedido, Produtos, ValorTotal, NomeCliente, ContatoCliente, EnderecoCliente } = req.body;
+        const { id, produtos, valorTotal, nomeCliente, contatoCliente, enderecoCliente } = req.body;
 
 
         /***************************************************CRIAÇAO DE PDF************************************************** */
@@ -173,7 +173,7 @@ router.post('/gerarPDF', async (req, res) => {
         const pdfDir = path.join(__dirname, '../public/PDF');
         if (!fs.existsSync(pdfDir)) fs.mkdirSync(pdfDir, { recursive: true });
 
-        const pdfPath = path.join(pdfDir, `venda_${Id}.pdf`);
+        const pdfPath = path.join(pdfDir, `venda_${id}.pdf`);
         const doc = new PDFDocument({ margin: 30 });
 
         const writeStream = fs.createWriteStream(pdfPath);
@@ -193,8 +193,8 @@ router.post('/gerarPDF', async (req, res) => {
 
         doc.fontSize(20).text('Central de Pedidos', { align: 'center', bold: true }).moveDown(0.5);
         doc.fontSize(12)
-            .text(`Data: ${DataPedido}`, { align: 'center' })
-            .text(`ID da Venda: ${Id}`, { align: 'center' })
+            .text(`Data: ${Date.now()}`, { align: 'center' })
+            .text(`ID da Venda: ${id}`, { align: 'center' })
             .moveDown(1);
 
         doc.fontSize(14).text('Detalhes da Venda', { align: 'center' }).moveDown(3);
@@ -202,12 +202,12 @@ router.post('/gerarPDF', async (req, res) => {
         // ================== TABELA ==================
         doc.fontSize(12).text('Itens:', { underline: true }).moveDown(0.5);
 
-        Produtos.forEach((p, index) => {
+        produtos.forEach((p) => {
             doc.fontSize(10)
-                .text(`${index + 1}. ${'valor unitario'} — ${'quantidade'}x R$ ${99.900.toFixed(2)}`, {
+                .text(`${p.produtoId}. ${'valor unitario'} — ${'quantidade'}x R$ ${(99.9).toFixed(2)}`, {
                     align: 'left',
                 })
-                .text(`   Total: R$ ${100.000.toFixed(2)}`)
+                .text(`   Total: R$ ${valorTotal.toFixed(2)}`)
                 .moveDown(1);
         });
 
@@ -235,7 +235,7 @@ router.post('/gerarPDF', async (req, res) => {
         writeStream.on('finish', () => {
             res.status(201).json({
                 message: 'Venda efetuada e PDF gerado com sucesso',
-                pdf: `/PDF/venda_${Id}.pdf`,
+                pdf: `/PDF/venda_${id}.pdf`,
             });
         });
 
