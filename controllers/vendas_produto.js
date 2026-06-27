@@ -207,7 +207,7 @@ router.post('/gerarPDF', async (req, res) => {
                 .text(`${index + 1}. ${p.nome} — ${p.quantidade} x R$ ${p.valorUnitario.toFixed}`, {
                     align: 'left',
                 })
-                .text(`   Total: R$ ${psubtotal.toFixed(2)}`)
+                .text(`   Total: R$ ${p.subtotal.toFixed(2)}`)
                 .moveDown(1);
         });
 
