@@ -235,7 +235,7 @@ router.post('/gerarPDF', async (req, res) => {
         writeStream.on('finish', () => {
             res.status(201).json({
                 message: 'Venda efetuada e PDF gerado com sucesso',
-                pdf: `/PDF/venda_${novaVenda.id_vendas}.pdf`,
+                pdf: `/PDF/venda_${Id}.pdf`,
             });
         });
 
