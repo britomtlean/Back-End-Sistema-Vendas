@@ -160,4 +160,90 @@ router.post('/venderproduto', async (req, res) => {
     }
 })
 
+router.post('/gerarPDF', async (req, res) => {
+
+    console.log(req.body);
+
+    try {
+        const { Id, DataPedido, Produtos, ValorTotal, NomeCliente, ContatoCliente, EnderecoCliente } = req.body;
+
+
+        /***************************************************CRIAÇAO DE PDF************************************************** */
+
+        const pdfDir = path.join(__dirname, '../public/PDF');
+        if (!fs.existsSync(pdfDir)) fs.mkdirSync(pdfDir, { recursive: true });
+
+        const pdfPath = path.join(pdfDir, `venda_${Id}.pdf`);
+        const doc = new PDFDocument({ margin: 30 });
+
+        const writeStream = fs.createWriteStream(pdfPath);
+        doc.pipe(writeStream);
+
+        // ================== CABEÇALHO ==================
+
+        const logoPath = path.join(__dirname, '../public/imagens/logo.png'); // opcional
+        if (fs.existsSync(logoPath)) {
+            const pageWidth = doc.page.width;
+            const imageWidth = 80;
+            const x = (pageWidth - imageWidth) / 2;
+
+            doc.image(logoPath, x, 30, { width: imageWidth });
+        }
+        doc.moveDown(7);
+
+        doc.fontSize(20).text('Central de Pedidos', { align: 'center', bold: true }).moveDown(0.5);
+        doc.fontSize(12)
+            .text(`Data: ${DataPedido}`, { align: 'center' })
+            .text(`ID da Venda: ${Id}`, { align: 'center' })
+            .moveDown(1);
+
+        doc.fontSize(14).text('Detalhes da Venda', { align: 'center' }).moveDown(3);
+
+        // ================== TABELA ==================
+        doc.fontSize(12).text('Itens:', { underline: true }).moveDown(0.5);
+
+        Produtos.forEach((p, index) => {
+            doc.fontSize(10)
+                .text(`${index + 1}. ${'valor unitario'} — ${'quantidade'}x R$ ${99.900.toFixed(2)}`, {
+                    align: 'left',
+                })
+                .text(`   Total: R$ ${100.000.toFixed(2)}`)
+                .moveDown(1);
+        });
+
+        // ================== LINHA ==================
+        doc.moveDown(0.5);
+        doc.moveTo(doc.x, doc.y).lineTo(550, doc.y).strokeColor('#f3cb80ff').stroke();
+
+        // ================== TOTAL ==================
+        doc.moveDown(1);
+        doc.fontSize(14).text(`Total da Venda: R$ ${300.00.toFixed(2)}`, {
+            align: 'right',
+            bold: true,
+        });
+
+        // ================== RODAPÉ ==================
+        doc.moveDown(2);
+        doc.fontSize(11)
+            .text('Obrigado pela preferência!', { align: 'center' })
+            .text("Sistema de Vendas • Desenvolvido Brit's Enterprise", {
+                align: 'center',
+            });
+
+        doc.end();
+
+        writeStream.on('finish', () => {
+            res.status(201).json({
+                message: 'Venda efetuada e PDF gerado com sucesso',
+                pdf: `/PDF/venda_${novaVenda.id_vendas}.pdf`,
+            });
+        });
+
+        /************************************************************************************************ */
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ message: 'Erro na operação' });
+    }
+});
+
 export default router

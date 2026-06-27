@@ -19,33 +19,34 @@ import http from "http";
 import { Server } from "socket.io";
 
 //rotas
-import funcionarios from './public_routers/funcionarios.js'
-import vendas from './public_routers/vendas.js'
-import pruduvendas from './public_routers/vendas_produto.js'
-import produtos from './public_routers/produtos.js'
+import funcionarios from './controllers/funcionarios.js'
+import vendas from './controllers/vendas.js'
+import pruduvendas from './controllers/vendas_produto.js'
+import produtos from './controllers/produtos.js'
 
-//Instancia para criação de rotas
-const app = express()
-app.use(express.json())
+//Configurações
+const app = express();
+app.use(express.json());
 app.use(cors());
 app.use(fileUpload());
 
 // Instancia para manipular o Banco de dados
 const prisma = new PrismaClient()
 
-// Instancias para manipular diretórios
-const __filename = fileURLToPath(import.meta.url) //diretório com arquivo
-const __dirname = path.dirname(__filename) //dirétório sem o arquivo
-console.log("Diretório principal: ",__dirname)
+// Configurações de diretório e pasta pública
 
-// Servir arquivos estáticos (como CSS, JS, imagens)
-app.use(express.static(path.join(__dirname, 'public'))) //define como o diretório princial para manipulação
+const __filename = fileURLToPath(import.meta.url); // Diretório com arquivo
+const __dirname = path.dirname(__filename); // Dirétório sem o arquivo
+console.log("Diretório principal: ",__dirname);
 
-//rota para exibir imagens
+// Arquivos Estáticos (como CSS, JS, imagens)
+app.use(express.static(path.join(__dirname, 'public')));
+
+//Rota pública para imagens
 app.use('/imagens', express.static(path.join(__dirname, '/public/imagens'))); //define como rota pública para acessar arquivos de imagens
 
 
-/********************************************************************************************************************************************************* */
+/************************************************************************************** */
 
 
 /****************************SOCKET***************************** */
